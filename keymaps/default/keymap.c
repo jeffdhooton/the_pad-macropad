@@ -12,6 +12,7 @@ enum layers {
 
 enum custom_keycodes {
     REDO = SAFE_RANGE,
+    KC_COMMENT,
     ZOOM_IN,
     ZOOM_OUT,
     PAN,
@@ -31,7 +32,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_MPRV, KC_MPLY, KC_MNXT, TG(DESIGN),  // Row 1: Media controls and toggle layer
         KC_COPY, KC_PASTE, KC_CUT, KC_UNDO,     // Row 2: Common editing commands
         KC_O,    KC_S,    KC_W,   KC_B,         // Row 3: Open, Save, Close Tab, Compile/Run
-        KC_C,    KC_V,    KC_BRIU, KC_BRID      // Row 4: Comment, Uncomment, Brightness up, Brightness down
+        KC_COMMENT, KC_COMMENT,    KC_BRIU, KC_BRID      // Row 4: Comment, Uncomment, Brightness up, Brightness down
     ),
     [DESIGN] = LAYOUT_ortho_4x4(
         ZOOM_IN, ZOOM_OUT, PAN, TG(BASE),         // Row 1: Zoom in, Zoom out, Pan, Toggle Base
@@ -142,7 +143,7 @@ switch (keycode) {
             break;
 
         // Comment - Using Cmd+/
-        case KC_C:
+        case KC_COMMENT:
             if (record->event.pressed) {
                 register_code(KC_LGUI);
                 tap_code(KC_SLASH);
@@ -194,13 +195,6 @@ switch (keycode) {
                 // Example: Simulate holding down middle mouse button and moving mouse (not possible directly, pseudocode)
                 // This is typically not possible directly through a keyboard and would require additional software or macros outside of QMK
                 tap_code16(S(KC_M)); // Placeholder: shift + M for example
-            }
-            break;
-        case ROTATE:
-            if (record->event.pressed) {
-                // Example: Simulate holding down right mouse button and moving mouse (not possible directly, pseudocode)
-                // This is typically not possible directly through a keyboard and would require additional software or macros outside of QMK
-                tap_code16(S(KC_R)); // Placeholder: shift + R for example
             }
             break;
         case EXTRUDE:
