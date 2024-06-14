@@ -1,7 +1,6 @@
 #include QMK_KEYBOARD_H
 
 #include "quantum.h"
-// #include "print.h"
 
 #define ENCODER_BTN_1 B4
 #define ENCODER_BTN_2 F6
@@ -26,8 +25,6 @@ enum custom_keycodes {
     LAYER_DOWN,
     WIRE_SHADE_TOGGLE
 };
-
-sdfkljasdf;lsdf
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT_ortho_4x4(
