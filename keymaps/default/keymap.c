@@ -27,6 +27,8 @@ enum custom_keycodes {
     WIRE_SHADE_TOGGLE
 };
 
+sdfkljasdf;lsdf
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT_ortho_4x4(
         KC_MPRV, KC_MPLY, KC_MNXT, TG(DESIGN),  // Row 1: Media controls and toggle layer
@@ -65,14 +67,117 @@ void keyboard_post_init_user(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 switch (keycode) {
+        case KC_COPY:
+            if (record->event.pressed) {
+                // Send Cmd+C for Copy
+                register_code(KC_LGUI);
+                tap_code(KC_C);
+                unregister_code(KC_LGUI);
+            }
+            break;
+        case KC_PASTE:
+            if (record->event.pressed) {
+                // Send Cmd+V for Paste
+                register_code(KC_LGUI);
+                tap_code(KC_V);
+                unregister_code(KC_LGUI);
+            }
+            break;
+        case KC_CUT:
+            if (record->event.pressed) {
+                // Send Cmd+X for Cut
+                register_code(KC_LGUI);
+                tap_code(KC_X);
+                unregister_code(KC_LGUI);
+            }
+            break;
+        case KC_UNDO:
+            if (record->event.pressed) {
+                // Send Cmd+X for Cut
+                register_code(KC_LGUI);
+                tap_code(KC_U);
+                unregister_code(KC_LGUI);
+            }
+            break;
         case REDO:
             if (record->event.pressed) {
                 // Simulate Ctrl + Y for redo
-                register_code(KC_LCTL);
+                register_code(KC_LGUI);
                 tap_code(KC_Y);
-                unregister_code(KC_LCTL);
+                unregister_code(KC_LGUI);
             }
             break;
+
+        // Open - Using Cmd+O
+        case KC_O:
+            if (record->event.pressed) {
+                register_code(KC_LGUI);
+                tap_code(KC_O);
+                unregister_code(KC_LGUI);
+            }
+            break;
+
+        // Save - Using Cmd+S
+        case KC_S:
+            if (record->event.pressed) {
+                register_code(KC_LGUI);
+                tap_code(KC_S);
+                unregister_code(KC_LGUI);
+            }
+            break;
+
+        // Close Tab - Using Cmd+W
+        case KC_W:
+            if (record->event.pressed) {
+                register_code(KC_LGUI);
+                tap_code(KC_W);
+                unregister_code(KC_LGUI);
+            }
+            break;
+
+        // Compile/Run - Using Cmd+B (commonly used in IDEs like Xcode)
+        case KC_B:
+            if (record->event.pressed) {
+                register_code(KC_LGUI);
+                tap_code(KC_B);
+                unregister_code(KC_LGUI);
+            }
+            break;
+
+        // Comment - Using Cmd+/
+        case KC_C:
+            if (record->event.pressed) {
+                register_code(KC_LGUI);
+                tap_code(KC_SLASH);
+                unregister_code(KC_LGUI);
+            }
+            break;
+
+        // Uncomment - Using Cmd+/
+        case KC_V:  // Assuming 'V' is meant for 'Uncomment' based on your keymap setup
+            if (record->event.pressed) {
+                register_code(KC_LGUI);
+                tap_code(KC_SLASH);
+                unregister_code(KC_LGUI);
+            }
+            break;
+
+        // Brightness Up - Using native keycode
+        case KC_BRIU:
+            if (record->event.pressed) {
+                tap_code(KC_BRIU);
+            }
+            break;
+
+        // Brightness Down - Using native keycode
+        case KC_BRID:
+            if (record->event.pressed) {
+                tap_code(KC_BRID);
+            }
+            break;
+    
+
+        // DESIGN
         case ZOOM_IN:
             if (record->event.pressed) {
                 // Simulate pressing Shift + '=' for '+'
