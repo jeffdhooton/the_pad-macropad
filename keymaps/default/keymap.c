@@ -6,45 +6,32 @@
 #define ENCODER_BTN_2 F6
 
 enum layers {
-  BASE,
-  DESIGN
+  BASE
 };
 
 enum custom_keycodes {
-    REDO = SAFE_RANGE,
-    KC_COMMENT,
-    ZOOM_IN,
-    ZOOM_OUT,
-    PAN,
-    ROTATE,
-    EXTRUDE,
-    SCALE,
-    SLICE,
-    VMOD_TOGGLE,
-    TOOL_SWITCH,
-    LAYER_UP,
-    LAYER_DOWN,
-    WIRE_SHADE_TOGGLE
+    WIRE_SHADE_TOGGLE,
+    ZOOM_TOGGLE_MIC,
+    ZOOM_TOGGLE_VIDEO,
+    MEET_TOGGLE_MIC,
+    MEET_TOGGLE_VIDEO,
+    OPEN,
+    SAVE,
+    CLOSE_WINDOW,
+    RUN,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT_ortho_4x4(
-        KC_MPRV, KC_MPLY, KC_MNXT, TG(DESIGN),  // Row 1: Media controls and toggle layer
-        KC_COPY, KC_PASTE, KC_CUT, KC_UNDO,     // Row 2: Common editing commands
-        KC_O,    KC_S,    KC_W,   KC_B,         // Row 3: Open, Save, Close Tab, Compile/Run
-        KC_COMMENT, KC_COMMENT,    KC_BRIU, KC_BRID      // Row 4: Comment, Uncomment, Brightness up, Brightness down
-    ),
-    [DESIGN] = LAYOUT_ortho_4x4(
-        ZOOM_IN, ZOOM_OUT, PAN, TG(BASE),         // Row 1: Zoom in, Zoom out, Pan, Toggle Base
-        EXTRUDE, SCALE, SLICE, VMOD_TOGGLE,     // Row 2: Extrude, Scale, Slice, View Mode Toggle
-        TOOL_SWITCH, LAYER_UP, LAYER_DOWN, KC_F11, // Row 3: Tool Switch, Layer Up, Layer Down, Fullscreen Toggle
-        WIRE_SHADE_TOGGLE, KC_UNDO, REDO, TG(BASE) // Row 4: Wireframe/Shade Toggle, Undo, Redo, Toggle back to Layer 0
+        KC_MPRV,            KC_MPLY,            KC_MNXT,            KC_MUTE,  // Row 1: Media controls and toggle layer
+        KC_COPY,            KC_PASTE,           KC_CUT,             KC_UNDO,     // Row 2: Common editing commands
+        OPEN,               SAVE,               CLOSE_WINDOW,       RUN,         // Row 3: Open, Save, Close Tab, Compile/Run
+        ZOOM_TOGGLE_MIC,    ZOOM_TOGGLE_VIDEO,  MEET_TOGGLE_MIC,    MEET_TOGGLE_VIDEO      // Row 4: Zoom & google meet commands
     )
 };
 
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [BASE] = { ENCODER_CCW_CW(KC_VOLU, KC_VOLD), ENCODER_CCW_CW(KC_PGUP, KC_PGDN) },
-    [DESIGN] = { ENCODER_CCW_CW(KC_VOLU, KC_VOLD), ENCODER_CCW_CW(KC_PGUP, KC_PGDN) },
 };
 
 void matrix_init_user(void) {
@@ -97,18 +84,10 @@ switch (keycode) {
                 unregister_code(KC_LGUI);
             }
             break;
-        case REDO:
-            if (record->event.pressed) {
-                // Simulate Ctrl + Y for redo
-                register_code(KC_LGUI);
-                tap_code(KC_Y);
-                unregister_code(KC_LGUI);
-            }
-            break;
 
-        // Open - Using Cmd+O
         case KC_O:
             if (record->event.pressed) {
+                // Open - Using Cmd+O
                 register_code(KC_LGUI);
                 tap_code(KC_O);
                 unregister_code(KC_LGUI);
@@ -142,107 +121,37 @@ switch (keycode) {
             }
             break;
 
-        // Comment - Using Cmd+/
-        case KC_COMMENT:
+        case ZOOM_TOGGLE_MIC:
             if (record->event.pressed) {
                 register_code(KC_LGUI);
-                tap_code(KC_SLASH);
-                unregister_code(KC_LGUI);
-            }
-            break;
-
-        // Uncomment - Using Cmd+/
-        case KC_V:  // Assuming 'V' is meant for 'Uncomment' based on your keymap setup
-            if (record->event.pressed) {
-                register_code(KC_LGUI);
-                tap_code(KC_SLASH);
-                unregister_code(KC_LGUI);
-            }
-            break;
-
-        // Brightness Up - Using native keycode
-        case KC_BRIU:
-            if (record->event.pressed) {
-                tap_code(KC_BRIU);
-            }
-            break;
-
-        // Brightness Down - Using native keycode
-        case KC_BRID:
-            if (record->event.pressed) {
-                tap_code(KC_BRID);
-            }
-            break;
-    
-
-        // DESIGN
-        case ZOOM_IN:
-            if (record->event.pressed) {
-                // Simulate pressing Shift + '=' for '+'
                 register_code(KC_LSFT);
-                tap_code(KC_EQL);
+                tap_code(KC_A);
                 unregister_code(KC_LSFT);
+                unregister_code(KC_LGUI);
             }
             break;
-        case ZOOM_OUT:
+        case ZOOM_TOGGLE_VIDEO:
             if (record->event.pressed) {
-                // Simulate pressing '-'
-                tap_code(KC_MINS);
+                register_code(KC_LGUI);
+                register_code(KC_LSFT);
+                tap_code(KC_V);
+                unregister_code(KC_LSFT);
+                unregister_code(KC_LGUI);
             }
             break;
-        case PAN:
+        case MEET_TOGGLE_MIC:
             if (record->event.pressed) {
-                // Example: Simulate holding down middle mouse button and moving mouse (not possible directly, pseudocode)
-                // This is typically not possible directly through a keyboard and would require additional software or macros outside of QMK
-                tap_code16(S(KC_M)); // Placeholder: shift + M for example
+                register_code(KC_LGUI);
+                tap_code(KC_D);
+                unregister_code(KC_LGUI);
             }
             break;
-        case EXTRUDE:
+
+        case MEET_TOGGLE_VIDEO:
             if (record->event.pressed) {
-                // Simulate pressing 'E' for extrude
+                register_code(KC_LGUI);
                 tap_code(KC_E);
-            }
-            break;
-        case SCALE:
-            if (record->event.pressed) {
-                // Simulate pressing 'S' for scale
-                tap_code(KC_S);
-            }
-            break;
-        case SLICE:
-            if (record->event.pressed) {
-                // Placeholder for slicing, no direct keyboard shortcut
-                tap_code16(S(KC_SLASH)); // Shift + '/' as a placeholder
-            }
-            break;
-        case VMOD_TOGGLE:
-            if (record->event.pressed) {
-                // Placeholder to toggle between different view modes
-                tap_code16(S(KC_V)); // Shift + V as a placeholder
-            }
-            break;
-        case TOOL_SWITCH:
-            if (record->event.pressed) {
-                // Placeholder to switch tools
-                tap_code16(S(KC_T)); // Shift + T as a placeholder
-            }
-            break;
-        case LAYER_UP:
-            if (record->event.pressed) {
-                // Placeholder to move up a layer
-                tap_code(KC_PGUP);
-            }
-            break;
-        case LAYER_DOWN:
-            if (record->event.pressed) {
-                // Placeholder to move down a layer
-                tap_code(KC_PGDN);
-            }
-            break;
-        case WIRE_SHADE_TOGGLE:
-            if (record->event.pressed) {
-                // Placeholder to toggle wireframe/shaded mode
-                tap_code16(S(KC_W)); // Shift + W as a placeholder
+                unregister_code(KC_LGUI);
             }
             break;
     }
